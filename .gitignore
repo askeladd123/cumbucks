@@ -3,3 +3,5 @@
 /pkg
 /dist
 /.idea
+Cargo.lock
+
