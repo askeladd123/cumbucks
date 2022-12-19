@@ -9,3 +9,4 @@ edition = "2021"
 yew = {version = "0.20.0", features = ["csr"]}
 gloo = "0.6.1"
 js-sys = "0.3.60"
+emoji = "0.2.1"

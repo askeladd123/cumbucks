@@ -1,4 +1,17 @@
-h1 {
+
+* {
     text-align: center;
-    vertical-align: center;
+}
+
+p {
+    font-size: 32px;
+    display: inline;
+    margin: 5%;
+}
+
+button {
+    font-size: 32px;
+    display: inline;
+    border: none;
+    background-color: transparent;
 }

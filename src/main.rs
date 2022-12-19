@@ -1,14 +1,20 @@
+#![allow(unused)]
 use yew::prelude::*;
 use gloo::timers::callback::{Timeout, Interval};
 use gloo::console;
+use yew::platform::time::interval;
+
+fn main() { yew::Renderer::<App>::new().render(); }
 
 enum Msg{
-    Inc,
+    PPButton,
+    Buck,
 }
 
 struct App{
     bux: u32,
     interval: Option<Interval>,
+    button_icon: String,
 }
 
 impl Component for App{
@@ -16,23 +22,28 @@ impl Component for App{
     type Properties = ();
     
     fn create(ctx: &Context<Self>) -> Self {
-        
-        let link = ctx.link().clone();
         Self{
             bux: 0,
-            interval: Some(Interval::new(1_000, move||link.send_message(Msg::Inc))),
+            interval: None,
+            button_icon: "▶️".into(),
         }
     }
     
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         
         match msg {
-            Msg::Inc => {
-                if 10 <= self.bux{
-                    self.interval = None
-                } else {
-                    self.bux += 1
-                }
+            Msg::PPButton => if self.interval.is_none(){
+                self.button_icon = "⏸".into();
+                let link = ctx.link().clone();
+                self.interval = Some(
+                    Interval::new(1_000, move||link.send_message(Msg::Buck))
+                );
+            } else {
+                self.button_icon = "▶️".into();
+                self.interval = None;
+            }
+            Msg::Buck => {
+                self.bux += 1;
             }
         }
         
@@ -40,12 +51,16 @@ impl Component for App{
     }
     
     fn view(&self, ctx: &Context<Self>) -> Html {
+        
+        let link = ctx.link().clone();
+        let pp_button = move|_|link.clone().send_message(Msg::PPButton);
+        
         html! {
             <>
-                <h1 id="time">{ self.bux }</h1>
+                <h1>{"do some work..."}</h1>
+                <p>{ self.bux }</p>
+                <button onclick={pp_button}>{self.button_icon.clone()}</button>
             </>
         }
     }
 }
-
-fn main() { yew::Renderer::<App>::new().render(); }
