@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-#      - name: Installing compiler
+      - name: Installing bundler
+        run: cargo install trunk
       - name: Fetching dependencies
         run: cargo fetch
       - name: Building
