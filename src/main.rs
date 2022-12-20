@@ -58,8 +58,10 @@ impl Component for App{
         html! {
             <>
                 <h1>{"do some work..."}</h1>
-                <p>{ self.bux }</p>
-                <button onclick={pp_button}>{self.button_icon.clone()}</button>
+                <div class="bob">
+                    <p>{ self.bux }</p>
+                    <button onclick={pp_button}>{self.button_icon.clone()}</button>
+                </div>
             </>
         }
     }
