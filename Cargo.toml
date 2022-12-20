@@ -7,6 +7,5 @@ edition = "2021"
 
 [dependencies]
 yew = {version = "0.20.0", features = ["csr"]}
-gloo = "0.6.1"
+gloo = "0.8.0"
 js-sys = "0.3.60"
-emoji = "0.2.1"
