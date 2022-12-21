@@ -4,6 +4,9 @@ use gloo::timers::callback::{Timeout, Interval};
 use gloo::console;
 use yew::platform::time::interval;
 
+mod store;
+use store::Store;
+
 fn main() { yew::Renderer::<App>::new().render(); }
 
 enum Msg{
@@ -61,6 +64,9 @@ impl Component for App{
                 <div class="bob">
                     <p>{ self.bux }</p>
                     <button onclick={pp_button}>{self.button_icon.clone()}</button>
+                </div>
+                <div id="store">
+                    <Store bux={self.bux}/>
                 </div>
             </>
         }
