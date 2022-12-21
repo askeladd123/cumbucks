@@ -1,0 +1,21 @@
+name: Build and Deploy to Github Pages
+on: push
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Installing bundler
+        run: rustup target add wasm32-unknown-unknown;cargo install trunk
+      - name: Fetching dependencies
+        run: cargo fetch
+      - name: Building
+        run: trunk build --release
+      - name: Fixing stupid problem
+        run: python trunk-gh-fixer.py time-for-socks-app dist/index.html
+      - name: Deploying to Github Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
