@@ -24,4 +24,4 @@ Then:
 
 ## Problems
 ### github pages / workflow
-Trunk routes files based on links, but github pages expects repo name to be included in link [thedodd, issue](https://github.com/thedodd/trunk/issues/268). This means I can't automatically deploy with github actions without changing *index.html*. 
+Trunk routes files based on links, but github pages expects repo name to be included in link [thedodd, issue](https://github.com/thedodd/trunk/issues/268). This means I can't automatically deploy with github actions without changing *index.html*. I fixed this by making a script [trunk-gh-fixer](/trunk-gh-fixer.py).
