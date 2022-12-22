@@ -1,3 +1,10 @@
+"""
+This scipt takes the *-html* file Trunk generates, and adds a custom word in front of the file names.
+Example: /index.js becomes /word/index.js
+
+It fixes a problem with using Trunk together with github pages.
+"""
+
 import sys
 
 try:
