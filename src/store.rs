@@ -11,26 +11,24 @@ pub fn Store(props: &Props) -> Html{
     let style_emoji = "margin: 2px;";
     let style_price = "font-size: 18px; margin: 2px;";
     
-    let sock_price_common = 10;
-    let sock_price_rare = 50;
-    let sock_price_legend = 200;
+    use crate::sock::price::*;
     
     html!{
         <>
             <div style="text-align: center;" id="socks">
-                <button style={if props.bux < sock_price_common {"opacity: 50%;"} else {""}}>
+                <button style={if props.bux < COMMON {"opacity: 50%;"} else {""}}>
                     <p style={style_emoji}>
                         {"🧦"}
                     </p>
-                    <p style={style_price}>{format!("{}$", sock_price_common)}</p>
+                    <p style={style_price}>{format!("{}$", COMMON)}</p>
                 </button>
-                <button style={if props.bux < sock_price_rare {"opacity: 50%;"} else {""}}>
+                <button style={if props.bux < RARE {"opacity: 50%;"} else {""}}>
                     <p style={style_emoji}>{"🧦"}</p>
-                    <p style={style_price}>{format!("{}$", sock_price_rare)}</p>
+                    <p style={style_price}>{format!("{}$", RARE)}</p>
                 </button>
-                <button style={if props.bux < sock_price_legend {"opacity: 50%;"} else {""}}>
+                <button style={if props.bux < LEGEND {"opacity: 50%;"} else {""}}>
                     <p style={style_emoji}>{"🧦"}</p>
-                    <p style={style_price}>{format!("{}$", sock_price_legend)}</p>
+                    <p style={style_price}>{format!("{}$", LEGEND)}</p>
                 </button>
             </div>
         </>

@@ -1,9 +1,8 @@
-
 h1 {
     text-align: center;
 }
 
-.bob {
+#dashboard {
     display: flex;
     justify-content: space-evenly;
 }
@@ -17,4 +16,18 @@ button {
     font-size: 32px;
     border: none;
     background-color: transparent;
+}
+
+@keyframes FadeIn {
+    from {
+        translate: -8px;
+        opacity: 0;
+    }
+    to {
+        opacity: 100%;
+    }
+}
+
+#store {
+    animation: FadeIn 0.33s;
 }

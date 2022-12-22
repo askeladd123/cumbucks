@@ -7,6 +7,14 @@ use yew::platform::time::interval;
 mod store;
 use store::Store;
 
+pub mod sock {
+    pub mod price {
+        pub const COMMON: u32 = 10;
+        pub const RARE: u32 = 50;
+        pub const LEGEND: u32 = 200;
+    }
+}
+
 fn main() { yew::Renderer::<App>::new().render(); }
 
 enum Msg{
@@ -61,13 +69,11 @@ impl Component for App{
         html! {
             <>
                 <h1>{"do some work..."}</h1>
-                <div class="bob">
+                <div id="dashboard">
                     <p>{ self.bux }</p>
                     <button onclick={pp_button}>{self.button_icon.clone()}</button>
                 </div>
-                <div id="store">
-                    <Store bux={self.bux}/>
-                </div>
+                if sock::price::COMMON < self.bux {<div id="store"><Store bux={self.bux}/></div>}
             </>
         }
     }
