@@ -636,7 +636,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('time-for-socks-app-a2bc9f2cf63ea85a_bg.wasm', import.meta.url);
+        input = new URL('time-for-socks-app-549ac23cb9f429b_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
