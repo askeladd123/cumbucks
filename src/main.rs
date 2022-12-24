@@ -9,7 +9,7 @@ use store::Store;
 
 pub mod sock {
     pub mod price {
-        pub const COMMON: u32 = 1;
+        pub const COMMON: u32 = 10;
         pub const RARE: u32 = 50;
         pub const LEGEND: u32 = 200;
     }
@@ -20,6 +20,7 @@ fn main() { yew::Renderer::<App>::new().render(); }
 enum Msg{
     PPButton,
     Buck,
+    Store(store::Msg),
 }
 
 struct App{
@@ -50,13 +51,23 @@ impl Component for App{
                         1_000,
                         move||link.send_message(Msg::Buck)
                     ));
-                } else {
-                    self.interval = None;
                 }
             }
             Msg::Buck => {
                 self.bux += 1;
             }
+            Msg::Store(msg) => {
+                self.bux -= match msg {
+                    store::Msg::BoughtCommon => sock::price::COMMON,
+                    store::Msg::BoughtRare => sock::price::RARE,
+                    store::Msg::BoughtLegend => sock::price::LEGEND,
+                };
+                self.counting = false;
+            }
+        }
+        
+        if !self.counting {
+            self.interval = None;
         }
         
         true
@@ -64,6 +75,7 @@ impl Component for App{
     
     fn view(&self, ctx: &Context<Self>) -> Html {
         let onclick = ctx.link().callback(|_|Msg::PPButton);
+        let cb = ctx.link().callback(|msg|Msg::Store(msg));
         html! {
             <>
                 <h1>{"do some work..."}</h1>
@@ -71,7 +83,10 @@ impl Component for App{
                     <p>{ self.bux }</p>
                     <button {onclick}>{if self.counting{"⏸️"} else {"▶️"}}</button>
                 </div>
-                if sock::price::COMMON < self.bux {<div id="store"><Store bux={self.bux}/></div>}
+                if sock::price::COMMON < self.bux {
+                <div id="store">
+                    <Store bux={self.bux} sock_bought={cb}/>
+                </div>}
             </>
         }
     }
