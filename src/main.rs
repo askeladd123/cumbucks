@@ -7,6 +7,9 @@ use yew::platform::time::interval;
 mod store;
 use store::Store;
 
+mod unbox;
+use unbox::Unbox;
+
 pub mod sock {
     pub mod price {
         pub const COMMON: u32 = 10;
@@ -23,10 +26,17 @@ enum Msg{
     Store(store::Msg),
 }
 
+enum Route {
+    Home,
+    Unbox,
+    Settings
+}
+
 struct App{
     bux: u32,
     counting: bool,
     interval: Option<Interval>,
+    route: Route,
 }
 
 impl Component for App{
@@ -38,6 +48,7 @@ impl Component for App{
             bux: 0,
             counting: false,
             interval: None,
+            route: Route::Home,
         }
     }
     
@@ -57,6 +68,7 @@ impl Component for App{
                 self.bux += 1;
             }
             Msg::Store(msg) => {
+                self.route = Route::Unbox;
                 self.bux -= match msg {
                     store::Msg::BoughtCommon => sock::price::COMMON,
                     store::Msg::BoughtRare => sock::price::RARE,
@@ -74,20 +86,22 @@ impl Component for App{
     }
     
     fn view(&self, ctx: &Context<Self>) -> Html {
-        let onclick = ctx.link().callback(|_|Msg::PPButton);
-        let cb = ctx.link().callback(|msg|Msg::Store(msg));
-        html! {
-            <>
-                <h1>{"do some work..."}</h1>
-                <div id="dashboard">
-                    <p>{ self.bux }</p>
-                    <button {onclick}>{if self.counting{"⏸️"} else {"▶️"}}</button>
-                </div>
-                if sock::price::COMMON < self.bux {
-                <div id="store">
-                    <Store bux={self.bux} sock_bought={cb}/>
-                </div>}
-            </>
+        match self.route {
+            Route::Home => html! {
+                <>
+                    <h1>{"do some work..."}</h1>
+                    <div id="dashboard">
+                        <p>{ self.bux }</p>
+                        <button onclick={ctx.link().callback(|_|Msg::PPButton)}>{if self.counting{"⏸️"} else {"▶️"}}</button>
+                    </div>
+                    if sock::price::COMMON < self.bux {
+                    <div id="store">
+                        <Store bux={self.bux} sock_bought={ctx.link().callback(|msg|Msg::Store(msg))}/>
+                    </div>}
+                </>
+            },
+            Route::Unbox => html!{<><p>{"not implemented, but cool"}</p></>},
+            Route::Settings => todo!(),
         }
     }
 }
