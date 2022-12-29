@@ -1,4 +1,4 @@
-h1 {
+* {
     text-align: center;
 }
 
@@ -7,15 +7,34 @@ h1 {
     justify-content: space-evenly;
 }
 
-p {
+#bux {
     font-size: 32px;
     margin: 16px;
 }
 
-button {
+#pp {
     font-size: 32px;
     border: none;
     background-color: transparent;
+}
+
+/* STORE */
+
+#store button {
+    background-color: transparent;
+    border: none;
+}
+
+#store .sock_emoji {
+    margin: 2px;
+    font-size: 32px;
+    /*border: none;*/
+    background-color: transparent;
+}
+
+#store .sock_price {
+    margin: 2px;
+    font-size: 18px;
 }
 
 @keyframes FadeIn {
