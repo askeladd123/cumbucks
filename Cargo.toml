@@ -1,5 +1,5 @@
 [package]
-name = "time-for-socks-app"
+name = "cumbucks"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,3 +9,6 @@ edition = "2021"
 yew = {version = "0.20.0", features = ["csr"]}
 gloo = "0.8.0"
 js-sys = "0.3.60"
+
+[workspace]
+members = ["src-tauri"]

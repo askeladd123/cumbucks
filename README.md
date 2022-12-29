@@ -1,14 +1,14 @@
-# Time for Socks / CumBucks Tycoon
+# Cumbucks
 
 A time management program with a twist; instead of planning what to do, and when to take a break, the program rolls a dice and decides for you. 
 
-This is a GUI-version of [time-for-socks-terminal](https://github.com/askeladd123/time-for-socks-terminal).
+This is a GUI-version of [cumbucks-terminal](https://github.com/askeladd123/time-for-socks-terminal).
 
 ## Run
-You can run by clicking this link: [github pages](https://askeladd123.github.io/time-for-socks-app/).
+> You can run by clicking this link: [github pages](https://askeladd123.github.io/cumbucks/).
 
-## Build
-To build the app you first need:
+## Build for Web
+To build the app as a website first you need:
 - the [rust toolchain](https://www.rust-lang.org/tools/install)
 - ***wasm32-unknown-unknown*** target installed
   - run `rustup target add wasm32-unknown-unknown`
@@ -18,8 +18,15 @@ To build the app you first need:
 Then:
 - `trunk serve --release`
 - *trunk* will make a local server
-  - use the app on [localhost:8080]() in a browser
+  - use the app on [localhost:1420]() in a browser
 
+## Build for Native
+To build as a desktop app you need:
+- the stuff from ***Build for Web*** above
+- [tauri](https://tauri.app/v1/guides/getting-started/setup/html-css-js) bundler
+  - run `cargo install tauri-cli`
+- run `cargo tauri dev`
+  - *tauri-cli* will open the app in a desktop window *(and serve a website at [localhost:1420]())*
 ---
 
 ## Problems

@@ -14,7 +14,7 @@ jobs:
       - name: Building
         run: trunk build --release
       - name: Fixing stupid problem
-        run: python trunk-gh-fixer.py time-for-socks-app dist/index.html
+        run: python trunk-gh-fixer.py cumbucks dist/index.html
       - name: Deploying to Github Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
