@@ -589,8 +589,8 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper240 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 139, __wbg_adapter_16);
+    imports.wbg.__wbindgen_closure_wrapper263 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 165, __wbg_adapter_16);
         return addHeapObject(ret);
     };
     imports.wbg.__wbindgen_closure_wrapper302 = function(arg0, arg1, arg2) {
@@ -636,7 +636,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('cumbucks-85bf4207098e8002_bg.wasm', import.meta.url);
+        input = new URL('cumbucks-2054c95197c9a528_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
