@@ -589,16 +589,16 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper263 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 165, __wbg_adapter_16);
+    imports.wbg.__wbindgen_closure_wrapper271 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 169, __wbg_adapter_16);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper302 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 182, __wbg_adapter_19);
+    imports.wbg.__wbindgen_closure_wrapper307 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 184, __wbg_adapter_19);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper663 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 310, __wbg_adapter_22);
+    imports.wbg.__wbindgen_closure_wrapper671 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 313, __wbg_adapter_22);
         return addHeapObject(ret);
     };
 
@@ -636,7 +636,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('cumbucks-2054c95197c9a528_bg.wasm', import.meta.url);
+        input = new URL('cumbucks-3f52ebf87c26ddd4_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
