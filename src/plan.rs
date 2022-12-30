@@ -71,10 +71,19 @@ fn tab(props: &TabProps) -> Html {
     let me = props.me.clone();
     let onclick = move |_| set_id.emit(me);
 
+    let stuff = vec!["hei der", "hello there", "hola alli"];
+
     html! {
         <div class="tab">
             <button {onclick}>{format!("{:?}", props.me)}</button>
-            if props.me == props.open {<p>{"funny shit"}</p>}
+            if props.me == props.open {
+                {
+                    stuff.into_iter()
+                    .map(|k|html!{<div key={k}>{k}</div>})
+                    .collect::<Html>()
+                }
+                <input id="lol"/>
+            }
         </div>
     }
 }
