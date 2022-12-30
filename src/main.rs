@@ -1,15 +1,17 @@
 #![allow(unused)]
-use yew::prelude::*;
-use gloo::timers::callback::{Timeout, Interval};
 use gloo::console;
+use gloo::timers::callback::{Interval, Timeout};
 use yew::platform::time::interval;
+use yew::prelude::*;
 
+mod menu;
+mod plan;
 mod store;
 mod unbox;
-mod menu;
+use menu::Menu;
+use plan::Plan;
 use store::Store;
 use unbox::Unbox;
-use menu::Menu;
 
 pub mod sock {
     pub mod price {
@@ -19,13 +21,16 @@ pub mod sock {
     }
 }
 
-fn main() { yew::Renderer::<App>::new().render(); }
+fn main() {
+    yew::Renderer::<App>::new().render();
+}
 
-enum Msg{
+enum Msg {
     PPButton,
     Buck,
     Store(store::Msg),
     Menu(menu::Msg),
+    Home,
 }
 
 enum Route {
@@ -35,7 +40,7 @@ enum Route {
     Plan,
 }
 
-struct App{
+struct App {
     bux: u32,
     counting: bool,
     in_store: bool,
@@ -43,12 +48,12 @@ struct App{
     route: Route,
 }
 
-impl Component for App{
+impl Component for App {
     type Message = Msg;
     type Properties = ();
-    
+
     fn create(ctx: &Context<Self>) -> Self {
-        Self{
+        Self {
             bux: 0,
             counting: false,
             in_store: false,
@@ -56,17 +61,15 @@ impl Component for App{
             route: Route::Home,
         }
     }
-    
+
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Msg::PPButton => {
                 self.counting = !self.counting;
                 if self.counting {
                     let link = ctx.link().clone();
-                    self.interval = Some(Interval::new(
-                        1_000,
-                        move||link.send_message(Msg::Buck)
-                    ));
+                    self.interval =
+                        Some(Interval::new(1_000, move || link.send_message(Msg::Buck)));
                     self.in_store = false;
                 }
             }
@@ -94,15 +97,16 @@ impl Component for App{
                     menu::Msg::LogInOut => todo!(),
                 }
             }
+            Msg::Home => self.route = Route::Home,
         }
-        
+
         if !self.counting {
             self.interval = None;
         }
-        
+
         true
     }
-    
+
     fn view(&self, ctx: &Context<Self>) -> Html {
         match self.route {
             Route::Home => html! {
@@ -128,9 +132,9 @@ impl Component for App{
                     }
                 </>
             },
-            Route::Unbox => html!{<><p>{"unbox"}</p></>},
-            Route::Settings => html!{<><p>{"settings"}</p></>},
-            Route::Plan => html!{<><p>{"plan"}</p></>},
+            Route::Unbox => html! {<><p>{"unbox"}</p></>},
+            Route::Settings => html! {<><p>{"settings"}</p></>},
+            Route::Plan => html! {<><Plan/></>},
         }
     }
 }

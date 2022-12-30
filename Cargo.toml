@@ -8,7 +8,16 @@ edition = "2021"
 [dependencies]
 yew = {version = "0.20.0", features = ["csr"]}
 gloo = "0.8.0"
-js-sys = "0.3.60"
 
 [workspace]
 members = ["src-tauri"]
+
+[dependencies.web-sys]
+version = "0.3.19"
+features = [
+    "console",
+    "Window",
+    "Document",
+    "Element",
+    "Node",
+]
