@@ -19,7 +19,11 @@ impl Component for Plan {
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
-        self.open_tab = msg;
+        self.open_tab = if self.open_tab == msg {
+            TabID::None
+        } else {
+            msg
+        };
         true
     }
 
