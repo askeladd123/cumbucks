@@ -4,12 +4,16 @@ use gloo::timers::callback::{Interval, Timeout};
 use yew::platform::time::interval;
 use yew::prelude::*;
 
+mod log_in_out;
 mod menu;
 mod plan;
+mod settings;
 mod store;
 mod unbox;
+use log_in_out::LogInOut;
 use menu::Menu;
 use plan::Plan;
+use settings::Settings;
 use store::Store;
 use unbox::Unbox;
 
@@ -38,6 +42,7 @@ enum Route {
     Unbox,
     Settings,
     Plan,
+    LogInOut,
 }
 
 struct App {
@@ -94,7 +99,7 @@ impl Component for App {
                 self.route = match msg {
                     menu::Msg::Plan => Route::Plan,
                     menu::Msg::Settings => Route::Settings,
-                    menu::Msg::LogInOut => todo!(),
+                    menu::Msg::LogInOut => Route::LogInOut,
                 }
             }
             Msg::Home => self.route = Route::Home,
@@ -108,6 +113,8 @@ impl Component for App {
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
+        let go_back = ctx.link().callback(|_| Msg::Home);
+
         match self.route {
             Route::Home => html! {
                 <>
@@ -133,8 +140,11 @@ impl Component for App {
                 </>
             },
             Route::Unbox => html! {<><p>{"unbox"}</p></>},
-            Route::Settings => html! {<><p>{"settings"}</p></>},
-            Route::Plan => html! {<><Plan/></>},
+            Route::Settings => html! {<Settings go_back={go_back.clone()}/>},
+            Route::Plan => {
+                html! {<Plan go_back={go_back.clone()}/>}
+            }
+            Route::LogInOut => html! {<LogInOut go_back={go_back.clone()}/>},
         }
     }
 }
