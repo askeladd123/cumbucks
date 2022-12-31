@@ -72,7 +72,7 @@ impl Component for Plan {
 
         html! {
             <>
-                <button {onclick}>{"back"}</button>
+                <button class="back" {onclick}>{"back"}</button>
                 <div id="tabs">
                     {tabs}
                 </div>
@@ -153,7 +153,7 @@ mod tab {
                     let link = link.clone();
                     html! {
                         <div key={k.clone()}>
-                            {k.clone()}
+                            <div class="entry">{k.clone()}</div>
                             <button onclick={
                                 move|_|link.send_message(Msg::Remove(k.clone()))
                             }>{"-"}</button>
@@ -163,11 +163,13 @@ mod tab {
                 .collect::<Html>();
 
             html! {
-                <div class="tab">
-                    <button {onclick}>{&self.name}</button>
+                <div id={self.name.clone()} class="tab">
+                    <button class="tab_button" {onclick}>{&self.name}</button>
                     if ctx.props().me == ctx.props().open {
-                        {entries}
-                        <input id="lol" {onkeypress}/>
+                        <div class="tab_content">
+                            {entries}
+                            <input {onkeypress} placeholder="   add new item"/>
+                        </div>
                     }
                 </div>
             }

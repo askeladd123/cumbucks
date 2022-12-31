@@ -12,7 +12,7 @@ pub fn log_in_out(props: &Props) -> Html {
 
     html! {
         <>
-            <button {onclick}>{"back"}</button>
+            <button class="back" {onclick}>{"back"}</button>
             <p>{"log in/out"}</p>
         </>
     }

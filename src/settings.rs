@@ -12,7 +12,7 @@ pub fn settings(props: &Props) -> Html {
 
     html! {
         <>
-            <button {onclick}>{"back"}</button>
+            <button class="back" {onclick}>{"back"}</button>
             <p>{"settings"}</p>
         </>
     }

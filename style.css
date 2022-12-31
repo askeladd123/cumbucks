@@ -1,4 +1,4 @@
-* {
+h1 {
     text-align: center;
 }
 
@@ -51,4 +51,54 @@
     animation: FadeIn 0.33s;
 }
 
+/* MENU */
+#menu{
+    width: 33%;
+    margin: 24px auto;
+}
+
+#menu * {
+    font-size: larger;
+    display: block;
+    width: 100%;
+}
+
 /* PLAN */
+.back {
+    font-size: x-large;
+}
+
+#tabs{
+    margin: auto;
+    width: 66%;
+}
+
+.tab_button{
+    width: 100%;
+    font-size: xx-large;
+}
+
+.tab_content{
+    font-size: x-large;
+    padding: 3% 8%;
+    box-sizing: border-box;
+    width: 100%;
+    border: solid;
+}
+
+.tab_content .entry {
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.tab_content button{
+    float: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.tab_content input{
+    width: 100%;
+    background: none;
+}
