@@ -1,15 +1,23 @@
 #![allow(unused)]
+
 use gloo::console;
+use gloo::storage::{LocalStorage, Storage};
 use gloo::timers::callback::{Interval, Timeout};
+use std::collections::{HashMap, HashSet};
+use std::fmt::{Display, Formatter};
+use std::rc::Rc;
 use yew::platform::time::interval;
 use yew::prelude::*;
 
+mod instructions;
 mod log_in_out;
 mod menu;
 mod plan;
 mod settings;
 mod store;
 mod unbox;
+
+use instructions::Instruction;
 use log_in_out::LogInOut;
 use menu::Menu;
 use plan::Plan;
@@ -35,6 +43,8 @@ enum Msg {
     Store(store::Msg),
     Menu(menu::Msg),
     Home,
+    AddEntry { key: Instruction, val: String },
+    RmEntry { key: Instruction, val: String },
 }
 
 enum Route {
@@ -51,6 +61,7 @@ struct App {
     in_store: bool,
     interval: Option<Interval>,
     route: Route,
+    instructions: HashMap<Instruction, Rc<HashSet<String>>>,
 }
 
 impl Component for App {
@@ -58,12 +69,21 @@ impl Component for App {
     type Properties = ();
 
     fn create(ctx: &Context<Self>) -> Self {
+        let mut instructions = HashMap::<_, _>::new();
+        for ins in Instruction::iter() {
+            instructions.insert(
+                ins,
+                Rc::new(LocalStorage::get(ins.to_string()).unwrap_or_else(|_| HashSet::new())),
+            );
+        }
+
         Self {
             bux: 0,
             counting: false,
             in_store: false,
             interval: None,
             route: Route::Home,
+            instructions,
         }
     }
 
@@ -103,6 +123,8 @@ impl Component for App {
                 }
             }
             Msg::Home => self.route = Route::Home,
+            Msg::AddEntry { key, val } => todo!(),
+            Msg::RmEntry { key, val } => todo!(),
         }
 
         if !self.counting {

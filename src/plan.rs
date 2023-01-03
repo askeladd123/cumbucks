@@ -1,11 +1,12 @@
 use gloo::console;
 use yew::prelude::*;
 
-use crate::plan::TabID::WorkHard;
+use crate::plan::Instruction::WorkHard;
+use crate::Instruction;
 use tab::Tab;
 
 pub struct Plan {
-    open_tab: TabID,
+    open_tab: Instruction,
 }
 
 #[derive(Properties, PartialEq)]
@@ -13,30 +14,19 @@ pub struct Props {
     pub go_back: Callback<()>,
 }
 
-#[derive(Debug, Copy, Clone, PartialEq)]
-pub enum TabID {
-    WorkHard,
-    WorkEasy,
-    TaskHard,
-    TaskEasy,
-    RewardSmall,
-    RewardBig,
-    None,
-}
-
 impl Component for Plan {
-    type Message = TabID;
+    type Message = Instruction;
     type Properties = Props;
 
     fn create(ctx: &Context<Self>) -> Self {
         Self {
-            open_tab: TabID::None,
+            open_tab: Instruction::None,
         }
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         self.open_tab = if self.open_tab == msg {
-            TabID::None
+            Instruction::None
         } else {
             msg
         };
@@ -49,7 +39,7 @@ impl Component for Plan {
 
         let set_id = ctx.link().callback(|id| id);
 
-        use TabID::*;
+        use Instruction::*;
         let tabs = [
             WorkHard,
             WorkEasy,
@@ -87,7 +77,7 @@ mod tab {
     use std::collections::HashSet;
     use yew::prelude::*;
 
-    use super::TabID;
+    use super::Instruction;
 
     pub struct Tab {
         values: HashSet<String>,
@@ -96,9 +86,9 @@ mod tab {
 
     #[derive(Properties, PartialEq)]
     pub struct Props {
-        pub open: TabID,
-        pub me: TabID,
-        pub set_id: Callback<TabID>,
+        pub open: Instruction,
+        pub me: Instruction,
+        pub set_id: Callback<Instruction>,
     }
 
     #[derive(Debug, Clone, PartialEq)]
