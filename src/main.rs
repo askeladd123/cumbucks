@@ -70,7 +70,7 @@ impl Component for App {
 
     fn create(ctx: &Context<Self>) -> Self {
         let mut instructions = HashMap::<_, _>::new();
-        for ins in Instruction::iter() {
+        for ins in Instruction::into_iter() {
             instructions.insert(
                 ins,
                 Rc::new(LocalStorage::get(ins.to_string()).unwrap_or_else(|_| HashSet::new())),
@@ -164,7 +164,13 @@ impl Component for App {
             Route::Unbox => html! {<><p>{"unbox"}</p></>},
             Route::Settings => html! {<Settings go_back={go_back.clone()}/>},
             Route::Plan => {
-                html! {<Plan go_back={go_back.clone()}/>}
+                html! {<Plan
+                go_back={go_back.clone()}
+                // add_entry={ctx.link().callback(|(key, val)|Msg::AddEntry {key, val})}
+                // rm_entry={ctx.link().callback(|(key, val)|Msg::RmEntry{key, val})}
+                // instructions={HashMap::new()}
+                bob={HashSet::<String>::new()}
+                />}
             }
             Route::LogInOut => html! {<LogInOut go_back={go_back.clone()}/>},
         }

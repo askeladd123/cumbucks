@@ -26,7 +26,7 @@ impl Display for Instruction {
 }
 
 impl Instruction {
-    pub fn iter() -> IntoIter<Instruction, 6> {
+    pub fn into_iter() -> IntoIter<Instruction, 6> {
         use Instruction::*;
         [
             WorkHard,
