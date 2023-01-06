@@ -3,8 +3,10 @@
 use gloo::console;
 use gloo::storage::{LocalStorage, Storage};
 use gloo::timers::callback::{Interval, Timeout};
+use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
 use std::fmt::{Display, Formatter};
+use std::ops::Deref;
 use std::rc::Rc;
 use yew::platform::time::interval;
 use yew::prelude::*;
@@ -45,6 +47,7 @@ enum Msg {
     Home,
     AddEntry { key: Instruction, val: String },
     RmEntry { key: Instruction, val: String },
+    Save,
 }
 
 enum Route {
@@ -61,7 +64,7 @@ struct App {
     in_store: bool,
     interval: Option<Interval>,
     route: Route,
-    instructions: HashMap<Instruction, Rc<HashSet<String>>>,
+    instructions: HashMap<Instruction, Rc<RefCell<HashSet<String>>>>,
 }
 
 impl Component for App {
@@ -69,11 +72,13 @@ impl Component for App {
     type Properties = ();
 
     fn create(ctx: &Context<Self>) -> Self {
-        let mut instructions = HashMap::<_, _>::new();
-        for ins in Instruction::into_iter() {
+        let mut instructions = HashMap::new();
+        for ins in Instruction::iter() {
             instructions.insert(
                 ins,
-                Rc::new(LocalStorage::get(ins.to_string()).unwrap_or_else(|_| HashSet::new())),
+                Rc::new(RefCell::new(
+                    LocalStorage::get(ins.to_string()).unwrap_or_else(|_| HashSet::new()),
+                )),
             );
         }
 
@@ -88,8 +93,10 @@ impl Component for App {
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
+        use Msg::*;
+
         match msg {
-            Msg::PPButton => {
+            PPButton => {
                 self.counting = !self.counting;
                 if self.counting {
                     let link = ctx.link().clone();
@@ -98,14 +105,14 @@ impl Component for App {
                     self.in_store = false;
                 }
             }
-            Msg::Buck => {
+            Buck => {
                 self.bux += 1;
                 if self.bux % sock::price::COMMON == 0 {
                     self.in_store = true;
                     self.counting = false;
                 }
             }
-            Msg::Store(msg) => {
+            Store(msg) => {
                 self.route = Route::Unbox;
                 self.bux -= match msg {
                     store::Msg::BoughtCommon => sock::price::COMMON,
@@ -115,16 +122,22 @@ impl Component for App {
                 self.in_store = false;
                 self.counting = false;
             }
-            Msg::Menu(msg) => {
+            Menu(msg) => {
                 self.route = match msg {
                     menu::Msg::Plan => Route::Plan,
                     menu::Msg::Settings => Route::Settings,
                     menu::Msg::LogInOut => Route::LogInOut,
                 }
             }
-            Msg::Home => self.route = Route::Home,
-            Msg::AddEntry { key, val } => todo!(),
-            Msg::RmEntry { key, val } => todo!(),
+            Home => self.route = Route::Home,
+            AddEntry { key, val } => todo!(),
+            RmEntry { key, val } => todo!(),
+            Save => {
+                for (k, v) in self.instructions.iter() {
+                    LocalStorage::set(k.to_string(), v.clone().as_ref().borrow().deref())
+                        .expect("Couldn't save elements in row: {k}.");
+                }
+            }
         }
 
         if !self.counting {
@@ -165,11 +178,11 @@ impl Component for App {
             Route::Settings => html! {<Settings go_back={go_back.clone()}/>},
             Route::Plan => {
                 html! {<Plan
+                save={ctx.link().callback(|_|Msg::Save)}
                 go_back={go_back.clone()}
                 // add_entry={ctx.link().callback(|(key, val)|Msg::AddEntry {key, val})}
                 // rm_entry={ctx.link().callback(|(key, val)|Msg::RmEntry{key, val})}
-                // instructions={HashMap::new()}
-                bob={HashSet::<String>::new()}
+                instructions={self.instructions.clone()}
                 />}
             }
             Route::LogInOut => html! {<LogInOut go_back={go_back.clone()}/>},

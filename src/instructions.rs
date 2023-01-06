@@ -17,7 +17,7 @@ impl Display for Instruction {
         f.write_str(match self {
             WorkHard => "work hard",
             WorkEasy => "work easy",
-            TaskHard => "work hard",
+            TaskHard => "task hard",
             TaskEasy => "task easy",
             RewardSmall => "reward small",
             RewardBig => "reward big",
@@ -26,13 +26,13 @@ impl Display for Instruction {
 }
 
 impl Instruction {
-    pub fn into_iter() -> IntoIter<Instruction, 6> {
+    pub fn iter() -> IntoIter<Instruction, 6> {
         use Instruction::*;
         [
             WorkHard,
             WorkEasy,
-            TaskEasy,
             TaskHard,
+            TaskEasy,
             RewardSmall,
             RewardBig,
         ]
