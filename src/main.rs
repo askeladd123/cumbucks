@@ -1,14 +1,11 @@
 #![allow(unused)]
 
-use gloo::console;
 use gloo::storage::{LocalStorage, Storage};
 use gloo::timers::callback::{Interval, Timeout};
 use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
-use std::fmt::{Display, Formatter};
 use std::ops::Deref;
 use std::rc::Rc;
-use yew::platform::time::interval;
 use yew::prelude::*;
 
 mod instructions;
@@ -25,7 +22,6 @@ use menu::Menu;
 use plan::Plan;
 use settings::Settings;
 use store::Store;
-use unbox::Unbox;
 
 pub mod sock {
     pub mod price {
@@ -180,8 +176,6 @@ impl Component for App {
                 html! {<Plan
                 save={ctx.link().callback(|_|Msg::Save)}
                 go_back={go_back.clone()}
-                // add_entry={ctx.link().callback(|(key, val)|Msg::AddEntry {key, val})}
-                // rm_entry={ctx.link().callback(|(key, val)|Msg::RmEntry{key, val})}
                 instructions={self.instructions.clone()}
                 />}
             }

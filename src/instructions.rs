@@ -1,5 +1,5 @@
 use std::array::IntoIter;
-use std::fmt::{Display, Formatter, Result, Write};
+use std::fmt::{Display, Formatter, Result};
 
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub enum Instruction {

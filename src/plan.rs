@@ -1,10 +1,9 @@
 use gloo::console;
-use std::cell::{Ref, RefCell};
+use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 use yew::prelude::*;
 
-use crate::plan::Instruction::WorkHard;
 use crate::Instruction;
 use tab::Tab;
 
@@ -17,8 +16,6 @@ pub struct Props {
     pub go_back: Callback<()>,
     pub instructions: HashMap<Instruction, Rc<RefCell<HashSet<String>>>>,
     pub save: Callback<()>,
-    // pub add_entry: Callback<(Instruction, String)>,
-    // pub rm_entry: Callback<(Instruction, String)>,
 }
 
 impl Component for Plan {
@@ -43,28 +40,16 @@ impl Component for Plan {
         let save = ctx.props().save.clone();
         let onclick = move |_| go_back.emit(());
 
-        let set_id = ctx.link().callback(|id| id);
+        let request_open_tab = ctx.link().callback(|id| id);
 
-        use Instruction::*;
-
-        // let add_entry = ctx.props().add_entry.clone();
-        // let rm_entry = ctx.props().rm_entry.clone();
         let tabs = Instruction::iter()
             .map(|v| {
-                // let add_entry = add_entry.clone();
-                // let add_entry:Callback<_> = (move |val| add_entry.emit((v, val))).into();
-
-                // let add_entry = add_entry.clone();
-                // let rm_entry:Callback<_> = (move |val| rm_entry.emit((v, val))).into();
-
                 html! {
                     <Tab
                         save={ctx.props().save.clone()}
-                        me={v}
-                        open={self.open_tab}
-                        set_id={set_id.clone()}
-                        // {add_entry}
-                        // {rm_entry}
+                        tab={v}
+                        open_tab={self.open_tab}
+                        request_to_open_tab={request_open_tab.clone()}
                         entries={ctx.props().instructions[&v].clone()}
                     />
                 }
@@ -74,9 +59,7 @@ impl Component for Plan {
         html! {
             <>
                 <button class="back" {onclick}>{"back"}</button>
-                <div id="tabs">
-                    {tabs}
-                </div>
+                <div id="tabs">{tabs}</div>
             </>
         }
     }
@@ -84,33 +67,25 @@ impl Component for Plan {
 
 mod tab {
     use gloo::console;
-    use gloo::storage::{LocalStorage, Storage};
-    use std::borrow::{Borrow, BorrowMut};
     use std::cell::RefCell;
-    use std::collections::{HashMap, HashSet};
+    use std::collections::HashSet;
     use std::rc::Rc;
     use yew::prelude::*;
 
     use super::Instruction;
 
-    pub struct Tab {
-        values: HashSet<String>,
-        name: String,
-    }
+    pub struct Tab;
 
     #[derive(Properties, PartialEq)]
     pub struct Props {
-        pub open: Option<Instruction>,
-        pub me: Instruction,
-        pub set_id: Callback<Instruction>,
         pub entries: Rc<RefCell<HashSet<String>>>,
+        pub tab: Instruction,
+        pub open_tab: Option<Instruction>,
+        pub request_to_open_tab: Callback<Instruction>,
         pub save: Callback<()>,
-        // pub add_entry: Callback<String>,
-        // pub rm_entry: Callback<String>,
-        // pub instructions: HashSet<String>,
     }
 
-    #[derive(Debug, Clone, PartialEq)]
+    #[derive(Debug, Clone, PartialEq, Eq)]
     pub enum Msg {
         Add(String),
         Remove(String),
@@ -121,10 +96,7 @@ mod tab {
         type Properties = Props;
 
         fn create(ctx: &Context<Self>) -> Self {
-            let name = ctx.props().me.to_string();
-            let values = LocalStorage::get(&name).unwrap_or_else(|_| HashSet::new());
-
-            Self { values, name }
+            Self
         }
 
         fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
@@ -142,11 +114,10 @@ mod tab {
         }
 
         fn view(&self, ctx: &Context<Self>) -> Html {
-            let set_id = ctx.props().set_id.clone();
-            let me = ctx.props().me.clone();
-            let onclick = move |_| set_id.emit(me);
+            let tab = ctx.props().tab;
+            let request_to_open_tab = ctx.props().request_to_open_tab.clone();
+            let onclick = move |_| request_to_open_tab.emit(tab);
 
-            let entries = ctx.props().entries.clone();
             let link = ctx.link().clone();
             let onkeypress = move |e: KeyboardEvent| {
                 if e.key() == "Enter" {
@@ -154,11 +125,6 @@ mod tab {
                     let value = input.value();
 
                     link.send_message(Msg::Add(value));
-                    // entries.borrow_mut().insert(value);
-
-                    // add_entry.emit(value);
-
-                    // link.send_message(Msg::Add(value));
                     input.set_value("");
                 }
             };
@@ -167,7 +133,6 @@ mod tab {
             let list = ctx
                 .props()
                 .entries
-                .clone()
                 .as_ref()
                 .borrow()
                 .clone()
@@ -186,14 +151,14 @@ mod tab {
                 .collect::<Html>();
 
             html! {
-                <div id={self.name.clone()} class="tab">
-                    <button class="tab_button" {onclick}>{&self.name}</button>
+                <div id={tab.to_string()} class="tab">
+                    <button class="tab_button" {onclick}>{tab.to_string()}</button>
 
-                    if let Some(open) = ctx.props().open {
-                        if ctx.props().me == open{
+                    if let Some(open) = ctx.props().open_tab {
+                        if ctx.props().tab == open{
                             <div class="tab_content">
                                 {list}
-                                <input {onkeypress} placeholder="   add new item"/>
+                                <input {onkeypress} placeholder="\tadd new item"/>
                             </div>
                         }
                     }
