@@ -205,7 +205,7 @@ function makeMutClosure(arg0, arg1, dtor, f) {
     return real;
 }
 function __wbg_adapter_18(arg0, arg1) {
-    wasm._dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hcc87e1b208b27734(arg0, arg1);
+    wasm._dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h3cd0817dd9461269(arg0, arg1);
 }
 
 let stack_pointer = 32;
@@ -217,7 +217,7 @@ function addBorrowedObject(obj) {
 }
 function __wbg_adapter_21(arg0, arg1, arg2) {
     try {
-        wasm._dyn_core__ops__function__FnMut___A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h15e175f064d74ae7(arg0, arg1, addBorrowedObject(arg2));
+        wasm._dyn_core__ops__function__FnMut___A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h680f796630bbcbfe(arg0, arg1, addBorrowedObject(arg2));
     } finally {
         heap[stack_pointer++] = undefined;
     }
@@ -644,16 +644,16 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper353 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 207, __wbg_adapter_18);
+    imports.wbg.__wbindgen_closure_wrapper366 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 221, __wbg_adapter_18);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper418 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 246, __wbg_adapter_21);
+    imports.wbg.__wbindgen_closure_wrapper440 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 258, __wbg_adapter_21);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper793 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 378, __wbg_adapter_24);
+    imports.wbg.__wbindgen_closure_wrapper815 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 390, __wbg_adapter_24);
         return addHeapObject(ret);
     };
 
@@ -691,7 +691,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('cumbucks-cb3e611aa33d43ad_bg.wasm', import.meta.url);
+        input = new URL('cumbucks-3754ede2d9d90936_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
