@@ -2,7 +2,7 @@
 target = "./index.html"
 
 [watch]
-watch = ["./src", "./style.css"]
+watch = ["./src", "./style.css", "Cargo.toml"]
 
 [serve]
 address = "127.0.0.1"

@@ -22,6 +22,7 @@ use menu::Menu;
 use plan::Plan;
 use settings::Settings;
 use store::Store;
+use unbox::Unbox;
 
 pub mod sock {
     pub mod price {
@@ -44,6 +45,7 @@ enum Msg {
     AddEntry { key: Instruction, val: String },
     RmEntry { key: Instruction, val: String },
     Save,
+    SetCurrentInstruction(String),
 }
 
 enum Route {
@@ -61,6 +63,7 @@ struct App {
     interval: Option<Interval>,
     route: Route,
     instructions: HashMap<Instruction, Rc<RefCell<HashSet<String>>>>,
+    current_instruction: String,
 }
 
 impl Component for App {
@@ -85,6 +88,7 @@ impl Component for App {
             interval: None,
             route: Route::Home,
             instructions,
+            current_instruction: "do some work...".to_owned(),
         }
     }
 
@@ -134,6 +138,9 @@ impl Component for App {
                         .expect("Couldn't save elements in row: {k}.");
                 }
             }
+            SetCurrentInstruction(str) => {
+                self.current_instruction = str;
+            }
         }
 
         if !self.counting {
@@ -149,7 +156,7 @@ impl Component for App {
         match self.route {
             Route::Home => html! {
                 <>
-                    <h1>{"do some work..."}</h1>
+                    <h1>{&self.current_instruction}</h1>
                     <div id="dashboard">
                         <p id="bux">{ self.bux }</p>
                         <button id="pp" onclick={ctx.link().callback(|_|Msg::PPButton)}>
@@ -170,7 +177,13 @@ impl Component for App {
                     }
                 </>
             },
-            Route::Unbox => html! {<><p>{"unbox"}</p></>},
+            Route::Unbox => {
+                html! {<Unbox 
+                    go_back={go_back.clone()} 
+                    instructions={self.instructions.clone()}
+                    set_ins={ctx.link().callback(|str|Msg::SetCurrentInstruction(str))}
+                    />}
+            }
             Route::Settings => html! {<Settings go_back={go_back.clone()}/>},
             Route::Plan => {
                 html! {<Plan
