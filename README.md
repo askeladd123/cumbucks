@@ -22,6 +22,7 @@ Then:
 
 ## Build for Native
 To build as a desktop app you need:
+- to complete the steps for web above
 - [tauri](https://tauri.app/v1/guides/getting-started/prerequisites) bundler
   - run `cargo install tauri-cli`
 - run `cargo tauri dev`
